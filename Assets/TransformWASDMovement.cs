@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class TransformWASDMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public bool moveRelativeToCharacter = true;
+    public float rotationSpeed = 720f;
 
     void Update()
     {
@@ -42,7 +42,19 @@ public class TransformWASDMovement : MonoBehaviour
 
         moveDirection.Normalize();
 
-        Space moveSpace = moveRelativeToCharacter ? Space.Self : Space.World;
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, moveSpace);
+        RotateToMoveDirection(moveDirection);
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
+
+    private void RotateToMoveDirection(Vector3 moveDirection)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
+    }
+
+    // lerp, clamp, Camera offset 변경
 }
