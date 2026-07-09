@@ -8,6 +8,7 @@ public enum PlayerType
 }
 
 // Transform 으로 이동하게 만드는 스크립트
+
 public class TransformMovement : MonoBehaviour
 {
     // Enum으로 플레이어를 지정할수 있도록 하는 변수, 유니티 에디터에서 설정할수 있도록 Public으로 선언
@@ -22,8 +23,13 @@ public class TransformMovement : MonoBehaviour
     // 이동키를 떼었을때 잠시동안 이동키 입력을 무시하도록 하는 변수
     public float releaseGraceTime = 0.08f;
     
-    // 이동키 버퍼를 두는 타이머 변수
+    // 이동 키의 버퍼를 두는 타이머 변수
     private float releaseGraceTimer;
+    // 현재 이동 벡터
+    private Vector3 currentMoveVector;
+
+    // MapManager에 경계를 확인하는 함수를 불러오기 위한 변수.
+    public MapManager mapManager;
 
     // 업데이트 함수
     void Update()
@@ -38,13 +44,15 @@ public class TransformMovement : MonoBehaviour
         Vector3 moveDirection = GetMoveDirectionWithReleaseGrace();
         
         // 이동방향에 따라 현재 이동벡터를 업데이트한다 
-        Vector3 currentMoveVector = UpdateMoveVector(moveDirection);
-        
+        currentMoveVector = UpdateMoveVector(moveDirection);
+
         // 현재 이동벡터에 따라 플레이어를 이동시킨다
         Move(currentMoveVector);
 
         // 이동방향에 따라 플레이어를 회전시킨다
-        Rotate(moveDirection);
+        Rotate(currentMoveVector);
+
+        mapManager.ClampToMapIfOutOfMap(transform);
     }
 
     // 키의 입력에 따라 노말라이즈 된 이동방향을 가져오는 함수
@@ -87,9 +95,6 @@ public class TransformMovement : MonoBehaviour
     // 현재 이동 벡터를 업데이트 한다.
     private Vector3 UpdateMoveVector(Vector3 moveDirection)
     {
-        // 현재 이동 벡터를 저장하는 변수
-        Vector3 currentMoveVector = Vector3.zero;
-
         // 이동 키 입력이 없다면, 현재 이동 벡터를 감속시킨다.
         if (moveDirection == Vector3.zero)
         {
@@ -198,18 +203,38 @@ public class TransformMovement : MonoBehaviour
     // 이동키가 이번 프레임에 눌렸는지 확인하는 함수
     private bool WasMoveKeyPressedThisFrame()
     {
-        return Keyboard.current.wKey.wasPressedThisFrame
-            || Keyboard.current.sKey.wasPressedThisFrame
-            || Keyboard.current.aKey.wasPressedThisFrame
-            || Keyboard.current.dKey.wasPressedThisFrame;
+        if(player == PlayerType.Player1)
+        {
+            return Keyboard.current.wKey.wasPressedThisFrame
+                || Keyboard.current.sKey.wasPressedThisFrame
+                || Keyboard.current.aKey.wasPressedThisFrame
+                || Keyboard.current.dKey.wasPressedThisFrame;
+        }
+        else
+        {
+            return Keyboard.current.upArrowKey.wasPressedThisFrame
+                || Keyboard.current.downArrowKey.wasPressedThisFrame
+                || Keyboard.current.leftArrowKey.wasPressedThisFrame
+                || Keyboard.current.rightArrowKey.wasPressedThisFrame;            
+        }
     }
 
     // 이동키가 이번 프레임에 떼어졌는지 확인하는 함수
     private bool WasMoveKeyReleasedThisFrame()
     {
-        return Keyboard.current.wKey.wasReleasedThisFrame
-            || Keyboard.current.sKey.wasReleasedThisFrame
-            || Keyboard.current.aKey.wasReleasedThisFrame
-            || Keyboard.current.dKey.wasReleasedThisFrame;
+        if(player == PlayerType.Player1)
+        {
+            return Keyboard.current.wKey.wasReleasedThisFrame
+                || Keyboard.current.sKey.wasReleasedThisFrame
+                || Keyboard.current.aKey.wasReleasedThisFrame
+                || Keyboard.current.dKey.wasReleasedThisFrame;
+        }
+        else
+        {
+            return Keyboard.current.upArrowKey.wasReleasedThisFrame
+                || Keyboard.current.downArrowKey.wasReleasedThisFrame
+                || Keyboard.current.leftArrowKey.wasReleasedThisFrame
+                || Keyboard.current.rightArrowKey.wasReleasedThisFrame;
+        }
     }
 }
