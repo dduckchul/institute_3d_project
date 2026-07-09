@@ -41,8 +41,8 @@ public class ClickToTransformMovement : MonoBehaviour
         // 클릭을 통해 대상 타겟 변경
         UpdateTargetFromClick();
         // 1플레이어 혹은 2플레이어, 타겟을 이동시킨다
-        MoveToTarget(player1, ref player1TargetPosition, ref player1HasTarget);
-        MoveToTarget(player2, ref player2TargetPosition, ref player2HasTarget);
+        player1HasTarget = MoveToTarget(player1, player1TargetPosition, player1HasTarget);
+        player2HasTarget = MoveToTarget(player2, player2TargetPosition, player2HasTarget);
     }
 
     // 마우스 클릭 이벤트 감지시 타겟을 업데이트한다.
@@ -112,31 +112,42 @@ public class ClickToTransformMovement : MonoBehaviour
         player1HasTarget = true;
     }
 
-    // 대상으로 이동
-    private void MoveToTarget(Transform playerTransform, ref Vector3 targetPosition, ref bool hasTarget)
+    // 해당 대상을 이동시키는 메서드
+    private bool MoveToTarget(Transform playerTransform, Vector3 targetPosition, bool hasTarget)
     {
+        // 플레이어 대상이 아니라면 리턴
         if (playerTransform == null || !hasTarget)
         {
-            return;
+            return false;
         }
 
+        // 타겟 포지션으로 이동
         Vector3 toTarget = targetPosition - playerTransform.position;
-        toTarget.y = 0f;
 
+        // 이동한 곳이 설정값 이하라면 멈추기.
         if (toTarget.magnitude <= stoppingDistance)
         {
-            hasTarget = false;
-            return;
+            return false;
         }
 
+        // 이동 방향 구하기
         Vector3 moveDirection = toTarget.normalized;
 
+
+        // 회전
         Rotate(playerTransform, moveDirection);
+        
+        // 플레이어 이동
         playerTransform.position += moveDirection * moveSpeed * Time.deltaTime;
+
+        //대상이 남아있다면 true 리턴
+        return true;
     }
 
+    // 클릭 위치 방향으로 로테이션
     private void Rotate(Transform playerTransform, Vector3 moveDirection)
     {
+        // 이동 방향이 zero면 회전 하지 않음
         if (moveDirection == Vector3.zero)
         {
             return;
