@@ -1048,6 +1048,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1568843567}
   - component: {fileID: 1568843566}
+  - component: {fileID: 1568843568}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1083,6 +1084,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1568843568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568843565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb3304351f25f740a491ae9c6643008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickToTransformMovement
+  player1: {fileID: 1001868052}
+  player2: {fileID: 1157273329}
+  mainCamera: {fileID: 330585545}
+  player2Cam: {fileID: 1939939155}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  moveSpeed: 5
+  rotationSpeed: 720
+  stoppingDistance: 0.05
 --- !u!1 &1647031429
 GameObject:
   m_ObjectHideFlags: 0
