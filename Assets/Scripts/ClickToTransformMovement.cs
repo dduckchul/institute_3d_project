@@ -147,7 +147,7 @@ public class ClickToTransformMovement : MonoBehaviour
     // 클릭 위치 방향으로 로테이션
     private void Rotate(Transform playerTransform, Vector3 moveDirection)
     {
-        // 이동 방향이 zeo
+        // 이동 방향이 zero면 회전 하지 않음
         if (moveDirection == Vector3.zero)
         {
             return;
