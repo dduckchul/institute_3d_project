@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class DoorSwitch : MonoBehaviour
 {
     public GameObject target;
+    public String tag = "player";
     public float openAngle = 90f;
     public float openDuration = 1f;
 
@@ -13,7 +15,7 @@ public class DoorSwitch : MonoBehaviour
     // 플레이어 태그를 확인하여 디버그 로그를 출력하는 함수
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(tag))
         {
             OpenDoor(target);
         }
