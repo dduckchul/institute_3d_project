@@ -52,7 +52,8 @@ public class TransformMovement : MonoBehaviour
         // 이동방향에 따라 플레이어를 회전시킨다
         Rotate(currentMoveVector);
 
-        mapManager.ClampToMapIfOutOfMap(transform);
+        // 클램프 임시 주석처리
+        // mapManager.ClampToMapIfOutOfMap(transform);
     }
 
     // 키의 입력에 따라 노말라이즈 된 이동방향을 가져오는 함수
