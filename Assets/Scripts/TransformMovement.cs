@@ -28,6 +28,9 @@ public class TransformMovement : MonoBehaviour
     // 현재 이동 벡터
     private Vector3 currentMoveVector;
 
+    // Animator 같은 다른 컴포넌트에서 현재 이동 속도를 읽을 때 사용한다.
+    public Vector3 Velocity => currentMoveVector;
+
     // MapManager에 경계를 확인하는 함수를 불러오기 위한 변수.
     public MapManager mapManager;
 
