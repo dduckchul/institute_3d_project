@@ -17,9 +17,14 @@ public class JumpScript : MonoBehaviour
     // 해당 컴포넌트 하위에 달려있는 Rigidbody를 쓸것이기 때문에, private로 선언한다.
     private Rigidbody rb;
 
+    private UnityChanAnimationScript unityChanAnimationScript;
+
+    
     // 게임이 처음 실행될때 호출되는 함수, Rigidbody 컴포넌트를 가져와 rb 변수에 저장한다. 
-    void Start()
+    void Awake()
     {
+        unityChanAnimationScript = GetComponent<UnityChanAnimationScript>();
+
         // Rigidbody 컴포넌트를 가져와 rb 변수에 저장한다.
         rb = GetComponent<Rigidbody>();
 
@@ -27,7 +32,12 @@ public class JumpScript : MonoBehaviour
         if (rb == null)
         {
             Debug.LogError("Rigidbody 컴포넌트가 필요합니다. 이 스크립트를 사용하는 오브젝트에 Rigidbody를 추가하세요.");
-        }
+        }        
+    }
+    
+    void Start()
+    {
+
     }
 
     // 1프레임마다 현재 키보드가 눌렸는지 확인하고, 스페이스가 눌렸고, 땅에 닿아있다면 Jump() 함수를 호출하여 점프를 수행한다.
@@ -54,6 +64,12 @@ public class JumpScript : MonoBehaviour
         // Rigidbody의 linearVelocity를 이용하여 윗쪽 방향으로 힘을 준다.
         // 현재 x와 z축의 속도를 유지한다.
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
+
+    
+        if(unityChanAnimationScript != null)
+        {
+            unityChanAnimationScript.ActiveJump();            
+        }
 
         // 점프했으므로 땅에 있지 않다고 표시합니다.
         isGrounded = false;

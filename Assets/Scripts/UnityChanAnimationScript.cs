@@ -36,7 +36,7 @@ public class UnityChanAnimationScript : MonoBehaviour
         animator.SetFloat(VelocityHash, movement.Velocity.magnitude);
     }
 
-    private void ActiveJump()
+    public void ActiveJump()
     {
         animator.SetTrigger("DoJump");
     }
